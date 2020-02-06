@@ -1,0 +1,24 @@
+---
+
+- name: install role packages
+  package: name=jenkins state=present
+
+- name: install apk packages for jobs
+  package: name=make,ansible-lint,parallel,terraform,ruby,postgresql-client,minio-client,go
+
+- name: install pip packages for jobs
+  pip:
+   name: yamllint
+   state: latest
+
+- name: install gems for jobs
+  gem:
+   name: mdl
+   state: latest
+   user_install: false
+
+- name: start and enable jenkins
+  service:
+   name: jenkins
+   enabled: true
+   state: started
