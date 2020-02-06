@@ -1,0 +1,55 @@
+---
+
+- name: set nonlocal_bind sysctl
+  lineinfile:
+   line: "net.ipv4.ip_nonlocal_bind=1"
+   path: /etc/sysctl.d/00-alpine.conf
+
+- name: set nonlocal_bind on init
+  lineinfile:
+   line: "::sysinit:/sbin/sysctl net.ipv4.ip_nonlocal_bind=1"
+   path: /etc/inittab
+  register: sysctl
+
+- name: reboot
+  shell: "reboot"
+  async: 1
+  poll: 0
+  when: 'sysctl.changed'
+
+- name: wait for reboot to complete
+  wait_for_connection:
+   connect_timeout: 20
+   sleep: 2
+   delay: 2
+   timeout: 300
+  when: 'sysctl.changed'
+
+- name: install role packages
+  package: name=haproxy state=present
+
+- name: configure haproxy
+  template:
+   src: haproxy.cfg
+   dest: /etc/haproxy/haproxy.cfg
+  notify: reload haproxy
+
+- name: land certificates
+  aws_s3:
+   s3_url: https://10.0.0.54/
+   bucket: certs
+   object: /{{ fqdn }}.chain
+   dest: /etc/ssl/private/{{ fqdn }}.chain
+   mode: get
+   overwrite: different
+   validate_certs: false
+   aws_access_key: "{{ lookup ('env', 'AWS_ACCESS_KEY') }}"
+   aws_secret_key: "{{ lookup ('env', 'AWS_SECRET_KEY') }}"
+  when: ssl_enabled
+  notify: reload haproxy
+
+- name: enable haproxy
+  service:
+   name: haproxy
+   enabled: true
+   state: started
