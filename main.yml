@@ -1,0 +1,57 @@
+---
+
+- hosts: alpine_common
+  roles:
+   - alpine_common
+
+- hosts: hypervisors_g0
+  roles:
+   - supermicro_x7_x8_x9
+   - lxd
+   - keepalived
+   - k3s_master
+
+- hosts: hypervisors_g1
+  roles:
+   - supermicro_x7_x8_x9
+   - lxd
+   - keepalived
+   - k3s_master
+
+- hosts: hypervisors_g2
+  roles:
+   - supermicro_x7_x8_x9
+   - lxd
+   - keepalived
+   - k3s_master
+
+- hosts: cockroachdb_nodes
+  roles:
+   - cockroachdb_tls
+   - keepalived
+
+- hosts: registry_nodes
+  roles:
+   - docker-registry
+   - keepalived
+
+- hosts: k3s_masters
+  roles:
+   - k3s_master
+
+- hosts: haproxy_nodes
+  roles:
+   - keepalived
+   - haproxy
+
+- hosts: elasticsearch_nodes
+  roles:
+   - elasticsearch
+
+- hosts: jenkins_nodes
+  roles:
+   - jenkins
+
+- hosts: freebsd_common
+  roles:
+   - freebsd_common

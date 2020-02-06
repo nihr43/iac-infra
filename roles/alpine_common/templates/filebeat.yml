@@ -1,0 +1,10 @@
+---
+
+filebeat.inputs:
+ - type: log
+   enabled: true
+   paths:
+    - /var/log/*
+
+output.elasticsearch:
+ hosts: ["10.0.0.52:9200"]

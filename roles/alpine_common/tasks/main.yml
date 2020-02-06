@@ -1,0 +1,48 @@
+---
+
+- name: land authorized_keys
+  template:
+   src: authorized_keys
+   dest: /root/.ssh/authorized_keys
+   owner: root
+   group: root
+   mode: '0600'
+  when: scrub_keys is defined
+
+- name: configure repos
+  template:
+   src: repositories
+   dest: /etc/apk/repositories
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: install common packages, py3-psycopg2 for ansible sql
+  package: name=vim,htop,git,py3-psycopg2
+
+# apk py3-boto doesnt work
+- name: pip install boto3 for ansible s3
+  pip: name=boto3
+
+- name: configure vim
+  template:
+   src: vimrc
+   dest: /root/.vimrc
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: land motd
+  template:
+   src: motd
+   dest: /etc/motd
+   owner: root
+   group: root
+   mode: '0644'
+  changed_when: false
+
+- name: disable vector
+  service:
+   name: vector
+   enabled: false
+   state: stopped

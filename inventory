@@ -1,0 +1,75 @@
+[freebsd_common:children]
+freebsd_default
+
+[freebsd_default]
+10.0.0.2
+aeb3-minio
+68aa-ws
+402a-btc
+98fa-postgres
+
+[alpine_common:children]
+cockroachdb_nodes
+alpine_default
+elasticsearch_nodes
+haproxy_nodes
+hypervisors
+minio_nodes
+sshd_nodes
+registry_nodes
+etcd_nodes
+jenkins_nodes
+
+[hypervisors:children]
+hypervisors_g0
+hypervisors_g1
+hypervisors_g2
+
+[alpine_default]
+haproxy-zookeeper-[0:1]
+zookeeper-[0:2]
+aports-dev-0
+test-0
+
+[hypervisors_g0]
+10.0.0.180 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
+
+[hypervisors_g1]
+10.0.0.246 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
+
+[hypervisors_g2]
+10.0.0.231 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
+
+[etcd_nodes]
+etcd-[0:2] mygroup=etcd_nodes
+
+[registry_nodes]
+docker-registry-[0:1]
+
+[sshd_nodes]
+
+[haproxy_nodes]
+haproxy-cockroachdb-db-[0:1] proxied_group=cockroachdb_nodes bind_address=10.0.0.51 front_bind_port=26257 back_bind_port=26257 mode=tcp balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
+haproxy-elasticsearch-[0:1] proxied_group=elasticsearch_nodes bind_address=10.0.0.52 front_bind_port=9200 back_bind_port=9200 mode=http balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
+haproxy-etcd-[0:1] proxied_group=etcd_nodes bind_address=10.0.0.54 front_bind_port=2379 back_bind_port=2379 mode=tcp balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
+haproxy-lxd-[0:1] proxied_group=hypervisors bind_address=10.0.0.59 front_bind_port=8443 back_bind_port=8443 mode=tcp balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
+
+[minio_nodes]
+minio-prod-[0:5]
+
+[cockroachdb_nodes]
+cockroachdb-g0-n0 leader=True
+cockroachdb-g1-n0 leader=False
+cockroachdb-g2-n0 leader=False
+
+[elasticsearch_nodes]
+elasticsearch-[0:1] mygroup=elasticsearch_nodes master=true
+
+[jenkins_nodes]
+jenkins-0
+
+[alpine_common:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[freebsd_common:vars]
+ansible_python_interpreter=/usr/local/bin/python

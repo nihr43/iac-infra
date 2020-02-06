@@ -1,0 +1,11 @@
+#!/sbin/openrc-run
+
+supervisor=supervise-daemon
+respawn_delay=1
+respawn_max=0
+healthcheck_timer=60
+
+command="/usr/bin/filebeat"
+command_args="-c /etc/filebeat/filebeat.yml"
+command_background="true"
+pidfile="/var/run/${RC_SVCNAME}.pid"

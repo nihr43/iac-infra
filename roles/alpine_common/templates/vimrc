@@ -1,0 +1,6 @@
+syntax on
+
+"noremap for command mode aliae
+"imap for insert mode aliae
+noremap <C-UP> 10k
+noremap <C-DOWN> 10j
