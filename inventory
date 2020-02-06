@@ -4,7 +4,6 @@ freebsd_default
 [freebsd_default]
 10.0.0.2
 aeb3-minio
-68aa-ws
 402a-btc
 98fa-postgres
 
@@ -26,9 +25,6 @@ hypervisors_g1
 hypervisors_g2
 
 [alpine_default]
-haproxy-zookeeper-[0:1]
-zookeeper-[0:2]
-aports-dev-0
 test-0
 
 [hypervisors_g0]
@@ -44,7 +40,7 @@ test-0
 etcd-[0:2] mygroup=etcd_nodes
 
 [registry_nodes]
-docker-registry-[0:1]
+docker-registry-[0:1] bind_address=10.0.0.57 keepalived_watch=docker-registry
 
 [sshd_nodes]
 
