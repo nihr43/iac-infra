@@ -1,0 +1,16 @@
+---
+
+- name: install role packages
+  package: name=keepalived state=present
+
+- name: configure keepalived
+  template:
+   src: keepalived.conf
+   dest: /etc/keepalived/keepalived.conf
+  notify: restart keepalived
+
+- name: enable keepalived
+  service:
+   name: keepalived
+   enabled: true
+   state: started
