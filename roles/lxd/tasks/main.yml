@@ -1,0 +1,52 @@
+---
+
+- name: install role packages
+  package: name=lxd,xz state=present
+
+- name: configure subuid
+  template:
+   src: subuid
+   dest: /etc/subuid
+   owner: root
+   group: root
+   mode: '0600'
+  notify: restart lxd
+
+- name: configure subgid
+  template:
+   src: subgid
+   dest: /etc/subgid
+   owner: root
+   group: root
+   mode: '0600'
+  notify: restart lxd
+
+- name: configure lxd init.d
+  template:
+   src: lxd.init.d
+   dest: /etc/init.d/lxd
+   owner: root
+   group: root
+   mode: '0755'
+  notify: restart lxd
+
+- name: configure lxd conf.d
+  template:
+   src: lxd.conf.d
+   dest: /etc/conf.d/lxd
+   owner: root
+   group: root
+   mode: '0644'
+  notify: restart lxd
+
+- name: start and enable cgroups
+  service:
+   name: cgroups
+   enabled: true
+   state: started
+
+- name: start and enable lxd
+  service:
+   name: lxd
+   enabled: true
+   state: started

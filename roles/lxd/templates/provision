@@ -1,0 +1,11 @@
+#!/bin/sh
+lxc exec $1 -- apk update
+lxc exec $1 -- apk upgrade
+lxc exec $1 -- apk add openssh python3
+lxc exec $1 -- passwd -u root
+lxc exec $1 -- sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin prohibit-password/g' /etc/ssh/sshd_config
+lxc exec $1 -- mkdir /root/.ssh
+lxc exec $1 -- wget https://github.com/nihr43.keys -O /root/.ssh/authorized_keys
+lxc exec $1 -- echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWPvtj4ho7QwLPKbv+tmlAzmu2GGVixxGSg+2NRLMXC root@a80f-cmm' >> /root/.ssh/authorized_keys
+lxc exec $1 -- rc-update add sshd
+lxc exec $1 -- rc-service sshd start
