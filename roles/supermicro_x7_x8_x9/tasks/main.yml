@@ -1,0 +1,75 @@
+---
+
+- name: install role packages
+  package: name=bridge,bonding,haveged state=present
+
+- name: start and enable haveged
+  service:
+   name: haveged
+   enabled: true
+   state: started
+
+- name: land chaos monkey
+  template:
+   src: chaos_monkey
+   dest: /etc/periodic/hourly/chaos_monkey
+   owner: root
+   group: root
+   mode: '0755'
+
+- name: land shell config
+  template:
+   src: color_prompt.sh
+   dest: /etc/profile.d/color_prompt.sh
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: land kernel modules
+  template:
+   src: modules
+   dest: /etc/modules
+   owner: root
+   group: root
+   mode: '0644'
+  register: modprobe
+
+- name: land sysctls
+  template:
+   src: local.conf
+   dest: /etc/sysctl.d/local.conf
+   owner: root
+   group: root
+   mode: '0644'
+  register: sysctl
+
+- name: configure kernel ulimits
+  lineinfile:
+   regexp: '^rc_ulimit='
+   line: 'rc_ulimit="-n 65536"'
+   path: /etc/rc.conf
+  register: ulimit
+
+- name: configure network interfaces
+  template:
+   src: interfaces
+   dest: /etc/network/interfaces
+   owner: root
+   group: root
+   mode: '0644'
+  when: bond
+  register: interfaces
+
+- name: reboot
+  shell: "reboot"
+  async: 1
+  poll: 0
+  when: 'sysctl.changed or ulimit.changed or interfaces.changed or modprobe.changed'
+
+- name: wait for reboot to complete
+  wait_for_connection:
+   connect_timeout: 20
+   sleep: 2
+   delay: 2
+   timeout: 300
+  when: 'sysctl.changed or ulimit.changed or interfaces.changed or modprobe.changed'

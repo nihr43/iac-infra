@@ -1,0 +1,21 @@
+auto lo
+iface lo inet loopback
+
+auto bond0
+iface bond0 inet manual
+  bond-slaves eth0 eth1
+  bond-mode 4
+  post-up ip link set dev bond0 mtu 9000
+
+auto br0
+iface br0 inet static
+  mtu 9000
+  bridge_ports bond0
+  bridge_stp 0
+  address {{ ansible_default_ipv4.address }}
+  netmask 255.255.255.0
+  gateway 10.0.0.1
+  pre-up sysctl net.bridge.bridge-nf-call-arptables=0
+  pre-up sysctl net.bridge.bridge-nf-call-iptables=0
+  pre-up sysctl net.bridge.bridge-nf-call-ip6tables=0
+  post-up iptables -I FORWARD -i br0 -o br0 -j ACCEPT
