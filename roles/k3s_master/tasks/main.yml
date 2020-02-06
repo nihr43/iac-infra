@@ -1,0 +1,51 @@
+---
+
+- name: install role packages
+  package: name=k3s state=present
+
+- name: configure k3s conf.d
+  template:
+   src: k3s.conf.d
+   dest: /etc/conf.d/k3s
+   owner: root
+   group: root
+   mode: '0600'
+  notify: restart k3s
+
+- name: configure k3s init.d
+  template:
+   src: k3s.init.d
+   dest: /etc/init.d/k3s
+   owner: root
+   group: root
+   mode: '0700'
+  notify: restart k3s
+
+- name: configure k3s registries
+  template:
+   src: registries.yml
+   dest: /etc/rancher/k3s/registries.yaml
+   owner: root
+   group: root
+   mode: '0644'
+  notify: restart k3s
+
+- name: copy cni plugins to viable PATH
+  copy:
+   src: /usr/share/cni-plugins/bin/
+   dest: /usr/local/bin/
+   mode: preserve
+   remote_src: true
+
+- name: enforce /usr/local/bin permissions
+  file:
+   path: /usr/local/bin
+   state: directory
+   mode: '0755'
+   recurse: true
+
+- name: start and enable k3s
+  service:
+   name: k3s
+   enabled: true
+   state: started
