@@ -1,0 +1,62 @@
+---
+
+- name: install elasticsearch
+  package: name=elasticsearch6 state=present
+  when: ansible_distribution == "FreeBSD"
+
+- name: install elasticsearch
+  package: name=elasticsearch state=present
+  when: ansible_distribution == "Alpine"
+
+- name: configure elasticsearch
+  template:
+   src: elasticsearch.yml
+   dest: /usr/local/etc/elasticsearch/elasticsearch.yml
+   owner: root
+   group: wheel
+   mode: '0755'
+  notify: restart elasticsearch
+  when: ansible_distribution == "FreeBSD"
+
+- name: configure elasticsearch
+  template:
+   src: elasticsearch.yml
+   dest: /etc/elasticsearch/elasticsearch.yml
+   owner: root
+   group: root
+   mode: '0644'
+  notify: restart elasticsearch
+  when: ansible_distribution == "Alpine"
+
+- name: configure the jvm
+  template:
+   src: jvm.options
+   dest: /usr/local/etc/elasticsearch/jvm.options
+   owner: root
+   group: wheel
+   mode: '0755'
+  notify: restart elasticsearch
+  when: ansible_distribution == "FreeBSD"
+
+- name: configure the jvm
+  template:
+   src: jvm.options
+   dest: /etc/elasticsearch/jvm.options
+   owner: root
+   group: root
+   mode: '0644'
+  notify: restart elasticsearch
+  when: ansible_distribution == "Alpine"
+
+- name: configure linux kernel threads
+  lineinfile:
+   line: 'rc_ulimit="-p 8128"'
+   path: /etc/rc.conf
+  when: ansible_distribution == "Alpine"
+  notify: restart elasticsearch
+
+- name: enable elasticsearch
+  service:
+   name: elasticsearch
+   enabled: true
+   state: started
