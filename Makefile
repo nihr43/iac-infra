@@ -2,8 +2,8 @@
 
 lint:
 	find . -name "main.yml" | xargs yamllint -c ./.yamllint.conf ;\
-	find . -name "main.yml" | grep -v '^\./main.yml' | xargs -P2 ansible-lint ;\
-	find . -name "*.sh" | grep -v 'color_prompt' | xargs shellcheck ;\
+	find ./scripts/ -name "*.sh" | xargs shellcheck ;\
+	ansible-lint ./main.yml ;\
 	terraform validate
 
 update:
