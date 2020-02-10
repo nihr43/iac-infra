@@ -40,9 +40,3 @@
    group: root
    mode: '0644'
   changed_when: false
-
-- name: disable vector
-  service:
-   name: vector
-   enabled: false
-   state: stopped
