@@ -28,7 +28,7 @@ hypervisors_g2
 test-0
 
 [hypervisors_g0]
-10.0.0.180 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
+10.0.0.200 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
 
 [hypervisors_g1]
 10.0.0.246 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
