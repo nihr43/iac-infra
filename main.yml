@@ -55,3 +55,7 @@
 - hosts: freebsd_common
   roles:
    - freebsd_common
+
+- hosts: jenkins-private-0
+  roles:
+   - docker

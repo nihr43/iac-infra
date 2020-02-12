@@ -26,6 +26,7 @@ hypervisors_g2
 
 [alpine_default]
 test-0
+minio-prod-1
 
 [hypervisors_g0]
 10.0.0.200 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
@@ -51,7 +52,6 @@ haproxy-etcd-[0:1] proxied_group=etcd_nodes bind_address=10.0.0.54 front_bind_po
 haproxy-lxd-[0:1] proxied_group=hypervisors bind_address=10.0.0.59 front_bind_port=8443 back_bind_port=8443 mode=tcp balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
 
 [minio_nodes]
-minio-prod-[0:5]
 
 [cockroachdb_nodes]
 cockroachdb-g0-n0 leader=True
@@ -63,6 +63,7 @@ elasticsearch-[0:1] mygroup=elasticsearch_nodes master=true
 
 [jenkins_nodes]
 jenkins-0
+jenkins-private-0
 
 [alpine_common:vars]
 ansible_python_interpreter=/usr/bin/python3
