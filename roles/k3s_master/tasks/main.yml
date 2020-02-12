@@ -21,6 +21,11 @@
    mode: '0700'
   notify: restart k3s
 
+- name: create k3s config directory
+  file:
+   path: /etc/rancher/k3s
+   state: directory
+
 - name: configure k3s registries
   template:
    src: registries.yml
@@ -30,11 +35,12 @@
    mode: '0644'
   notify: restart k3s
 
-- name: copy cni plugins to viable PATH
+- name: copy cni plugins to k3s' PATH
   copy:
    src: /usr/share/cni-plugins/bin/
    dest: /usr/local/bin/
    mode: preserve
+   force: false
    remote_src: true
 
 - name: enforce /usr/local/bin permissions
