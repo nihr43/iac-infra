@@ -4,7 +4,7 @@
   package: name=jenkins state=present
 
 - name: install apk packages for jobs
-  package: name=make,ansible-lint,parallel,terraform,ruby,postgresql-client,minio-client,go
+  package: name=make,ansible-lint,parallel,terraform,ruby,postgresql-client,minio-client,go,shellcheck,docker-compose,ansible
 
 - name: install pip packages for jobs
   pip:
