@@ -40,7 +40,7 @@
    src: /usr/share/cni-plugins/bin/
    dest: /usr/local/bin/
    mode: preserve
-   force: false
+   force: true
    remote_src: true
 
 - name: enforce /usr/local/bin permissions
