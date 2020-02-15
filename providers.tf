@@ -1,5 +1,6 @@
 variable "K8S_PASS" {}
 variable "LXD_PASS" {}
+variable "PSQL_PASS" {}
 
 terraform {
   backend "etcdv3" {
@@ -27,4 +28,14 @@ provider "kubernetes" {
   username               = "admin"
   password               = var.K8S_PASS
   cluster_ca_certificate = file("~/.kube/cluster-ca-cert.pem")
+}
+
+provider "postgresql" {
+  host            = "postgres-0"
+  port            = 5432
+  database        = "postgres"
+  username        = "terraform"
+  password        = var.PSQL_PASS
+  sslmode         = "disable"
+  connect_timeout = 15
 }
