@@ -1,0 +1,34 @@
+---
+
+- name: install role packages
+  package: name=postgresql state=present
+
+- name: configure postgres
+  template:
+   src: postgresql.conf
+   dest: /etc/postgresql/postgresql.conf
+   owner: root
+   group: root
+   mode: '0644'
+  notify: restart postgresql
+
+- name: configure hba
+  template:
+   src: pg_hba.conf
+   dest: /etc/postgresql/pg_hba.conf
+   owner: root
+   group: root
+   mode: '0644'
+  notify: restart postgresql
+
+- name: start and enable postgres
+  service:
+   name: postgresql
+   enabled: true
+   state: started
+
+- name: Create rails user, set MD5-hashed password, grant privs
+  postgresql_user:
+   name: terraform
+   password: "{{ lookup ('env', 'TF_VAR_PSQL_PASS') }}"
+   role_attr_flags: CREATEDB,SUPERUSER

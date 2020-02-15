@@ -18,6 +18,7 @@ sshd_nodes
 registry_nodes
 etcd_nodes
 jenkins_nodes
+postgres_nodes
 
 [hypervisors:children]
 hypervisors_g0
@@ -64,6 +65,9 @@ elasticsearch-[0:1] mygroup=elasticsearch_nodes master=true
 [jenkins_nodes]
 jenkins-0
 jenkins-private-0
+
+[postgres_nodes]
+postgres-0
 
 [alpine_common:vars]
 ansible_python_interpreter=/usr/bin/python3
