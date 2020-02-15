@@ -1,7 +1,7 @@
 ---
 
 - name: install role packages
-  package: name=bridge,bonding,haveged state=present
+  package: name=bridge,bonding,haveged,telegraf,lm-sensors state=present
 
 - name: start and enable haveged
   service:
@@ -17,13 +17,20 @@
    group: root
    mode: '0755'
 
-- name: land shell config
+- name: configure telegraf
   template:
-   src: color_prompt.sh
-   dest: /etc/profile.d/color_prompt.sh
+   src: telegraf.conf
+   dest: /etc/telegraf.conf
    owner: root
    group: root
    mode: '0644'
+  notify: restart telegraf
+
+- name: start and enable telegraf
+  service:
+   name: telegraf
+   enabled: true
+   state: started
 
 - name: land kernel modules
   template:

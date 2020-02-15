@@ -3,3 +3,7 @@
 - name: restart lxd
   service: name=lxd state=restarted
   listen: "restart lxd"
+
+- name: restart telegraf
+  service: name=telegraf state=restarted
+  listen: "restart telegraf"
