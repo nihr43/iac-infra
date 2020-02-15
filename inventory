@@ -29,7 +29,7 @@ test-0
 minio-prod-1
 
 [hypervisors_g0]
-10.0.0.200 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
+10.0.0.200 bind_address=10.0.0.56 keepalived_watch=lxd bond=true static_address=10.0.0.200 static_netmask=255.255.254.0
 
 [hypervisors_g1]
 10.0.0.246 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
