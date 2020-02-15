@@ -44,6 +44,10 @@
    - keepalived
    - haproxy
 
+- hosts: postgres_nodes
+  roles:
+   - postgres
+
 - hosts: elasticsearch_nodes
   roles:
    - elasticsearch
