@@ -1,0 +1,24 @@
+---
+
+- name: configure network interfaces
+  template:
+   src: interfaces
+   dest: /etc/network/interfaces
+   owner: root
+   group: root
+   mode: '0644'
+  register: interfaces
+
+- name: reboot
+  shell: "reboot"
+  async: 1
+  poll: 0
+  when: 'interfaces.changed'
+
+- name: wait for reboot to complete
+  wait_for_connection:
+   connect_timeout: 20
+   sleep: 2
+   delay: 2
+   timeout: 300
+  when: 'interfaces.changed'

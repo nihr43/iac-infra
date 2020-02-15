@@ -1,0 +1,7 @@
+auto eth0
+iface eth0 inet dhcp
+hostname $(hostname)
+
+iface eth0 inet static
+	address {{static_address}}
+	netmask {{static_netmask}}
