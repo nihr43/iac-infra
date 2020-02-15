@@ -32,7 +32,7 @@ minio-prod-1
 10.0.0.200 bind_address=10.0.0.56 keepalived_watch=lxd bond=true static_address=10.0.0.200 static_netmask=255.255.254.0
 
 [hypervisors_g1]
-10.0.0.246 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
+dfb9d306-aa32-4376-a3f2-12699aee17f5 bind_address=10.0.0.56 keepalived_watch=k3s bond=true static_address=10.0.0.202 static_netmask=255.255.254.0
 
 [hypervisors_g2]
 10.0.0.231 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
