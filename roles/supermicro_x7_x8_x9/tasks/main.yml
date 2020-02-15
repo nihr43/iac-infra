@@ -9,13 +9,13 @@
    enabled: true
    state: started
 
-- name: land chaos monkey
+- name: land shell config
   template:
-   src: chaos_monkey
-   dest: /etc/periodic/hourly/chaos_monkey
+   src: color_prompt.sh
+   dest: /etc/profile.d/color_prompt.sh
    owner: root
    group: root
-   mode: '0755'
+   mode: '0644'
 
 - name: configure telegraf
   template:
