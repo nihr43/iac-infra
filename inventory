@@ -19,10 +19,9 @@ etcd_nodes
 jenkins_nodes
 postgres_nodes
 
-[hypervisors:children]
-hypervisors_g0
-hypervisors_g1
-hypervisors_g2
+[minio_nodes:children]
+minio_blue
+minio_green
 
 [alpine_default]
 test-0
@@ -45,7 +44,17 @@ haproxy-elasticsearch-[0:1] proxied_group=elasticsearch_nodes bind_address=10.0.
 haproxy-etcd-[0:1] proxied_group=etcd_nodes bind_address=10.0.0.54 front_bind_port=2379 back_bind_port=2379 mode=tcp balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
 haproxy-lxd-[0:1] proxied_group=hypervisors bind_address=10.0.0.59 front_bind_port=8443 back_bind_port=8443 mode=tcp balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
 
-[minio_nodes]
+[minio_blue]
+minio-blue-0 static_address=10.0.0.70
+minio-blue-1 static_address=10.0.0.71
+minio-blue-2 static_address=10.0.0.72
+minio-blue-3 static_address=10.0.0.73
+
+[minio_green]
+minio-green-0 static_address=10.0.0.74
+minio-green-1 static_address=10.0.0.75
+minio-green-2 static_address=10.0.0.76
+minio-green-3 static_address=10.0.0.77
 
 [cockroachdb_nodes]
 cockroachdb-g0-n0 leader=True
