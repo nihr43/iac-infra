@@ -57,9 +57,9 @@ minio-green-2 static_address=10.0.0.76
 minio-green-3 static_address=10.0.0.77
 
 [cockroachdb_nodes]
-cockroachdb-g0-n0 leader=True
-cockroachdb-g1-n0 leader=False
-cockroachdb-g2-n0 leader=False
+cockroachdb-0 leader=True
+cockroachdb-1 leader=False
+cockroachdb-2 leader=False
 
 [elasticsearch_nodes]
 elasticsearch-[0:1] mygroup=elasticsearch_nodes master=true
