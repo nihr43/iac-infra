@@ -3,6 +3,11 @@
 - name: install role packages
   package: name=postgresql state=present
 
+- name: enforce postgres config dir
+  file:
+   path: /etc/postgresql
+   state: directory
+
 - name: configure postgres
   template:
    src: postgresql.conf
