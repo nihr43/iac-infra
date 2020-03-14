@@ -14,7 +14,6 @@ elasticsearch_nodes
 haproxy_nodes
 hypervisors
 minio_nodes
-sshd_nodes
 registry_nodes
 etcd_nodes
 jenkins_nodes
@@ -39,8 +38,6 @@ etcd-[0:2] mygroup=etcd_nodes
 
 [registry_nodes]
 docker-registry-[0:1] bind_address=10.0.0.57 keepalived_watch=docker-registry
-
-[sshd_nodes]
 
 [haproxy_nodes]
 haproxy-cockroachdb-db-[0:1] proxied_group=cockroachdb_nodes bind_address=10.0.0.51 front_bind_port=26257 back_bind_port=26257 mode=tcp balance=roundrobin ssl_enabled=false keepalived_watch=haproxy
