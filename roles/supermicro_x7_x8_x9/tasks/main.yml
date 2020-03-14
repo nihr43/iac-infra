@@ -69,7 +69,6 @@
    owner: root
    group: root
    mode: '0644'
-  when: bond
   register: interfaces
 
 - name: reboot
