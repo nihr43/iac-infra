@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # given a set like ^test-[0-9], scatter instances randomly across cluster
 
@@ -7,7 +7,7 @@ hash lxc jq || {
   exit 1
 }
 
-set -e -o pipefail
+set -e
 
 group="$1"
 
@@ -21,7 +21,7 @@ lxc ls --format=json | jq -r .[].name | grep -E "^${group}" | {
                      | shuf -n1)"
 
     # lxd crashes if you attempt to perform a no-op move
-    [ "$target_node" == "$current_node" ] || {
+    [ "$target_node" = "$current_node" ] || {
       printf "\033[0;32mrebalancing %s from %s to %s\033[0m\n" "$i" \
                                                                "$current_node" \
                                                                "$target_node"
