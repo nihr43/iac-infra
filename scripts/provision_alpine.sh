@@ -2,16 +2,10 @@
 #
 # provision a base alpine container
 
-set -e
+project="$1"
+instance="$2"
 
-hash lxc jq ansible-playbook || {
-  echo "missing dependencies"
-  exit 1
-}
-
-instance="$1"
-
-./rnd_move.sh "$instance"
+${project}/scripts/rnd_move.sh "$instance"
 
 # execute minimal setup over api
 lxc exec "$instance" -- sh -c '
