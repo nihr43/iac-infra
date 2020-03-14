@@ -53,5 +53,5 @@
 - name: start and enable k3s
   service:
    name: k3s
-   enabled: true
-   state: started
+   enabled: false
+   state: stopped
