@@ -18,6 +18,10 @@ iface br0 inet dhcp
   pre-up sysctl net.bridge.bridge-nf-call-ip6tables=0
   post-up iptables -I FORWARD -i br0 -o br0 -j ACCEPT
 
-iface br0 inet static
+auto br1
+iface br1 inet static
   address {{ static_address }}
   netmask {{ static_netmask }}
+  bridge_ports bond0
+  bridge_stp 0
+  mtu 9000
