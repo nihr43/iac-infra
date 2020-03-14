@@ -29,14 +29,10 @@ hypervisors_g2
 test-0
 minio-prod-1
 
-[hypervisors_g0]
-10.0.0.200 bind_address=10.0.0.56 keepalived_watch=lxd bond=true static_address=10.0.0.200 static_netmask=255.255.254.0
-
-[hypervisors_g1]
-dfb9d306-aa32-4376-a3f2-12699aee17f5 bind_address=10.0.0.56 keepalived_watch=k3s bond=true static_address=10.0.0.202 static_netmask=255.255.254.0
-
-[hypervisors_g2]
-10.0.0.231 bind_address=10.0.0.56 keepalived_watch=lxd bond=true
+[hypervisors]
+faa2c6f1-d7f8-4b4f-bac8-48e70d9e0086 bind_address=10.0.0.56 keepalived_watch=k3s bond=true static_address=10.0.0.200
+44c58b9e-8363-4491-9bb1-e23c0646a13b bind_address=10.0.0.56 keepalived_watch=k3s bond=true static_address=10.0.0.201
+dfb9d306-aa32-4376-a3f2-12699aee17f5 bind_address=10.0.0.56 keepalived_watch=k3s bond=true static_address=10.0.0.202
 
 [etcd_nodes]
 etcd-[0:2] mygroup=etcd_nodes

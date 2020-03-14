@@ -4,7 +4,9 @@
   roles:
    - alpine_common
 
-- hosts: hypervisors_g0
+- hosts: hypervisors
+  serial: 1
+  order: shuffle
   roles:
    - supermicro_x7_x8_x9
    - lxd
