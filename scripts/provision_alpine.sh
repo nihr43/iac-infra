@@ -46,4 +46,6 @@ lxc exec "$instance" -- sh -c '
   exit 1
 }
 
+# upgrade and provision
+ansible-playbook ./actions/alpine_update/tasks/main.yml --limit="$instance"
 ansible-playbook ./main.yml --limit="$instance"
