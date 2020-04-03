@@ -3,7 +3,7 @@
 lint:
 	find . -name "main.yml" | xargs yamllint -c ./.yamllint.conf &&\
 	find ./scripts/ -name "*.sh" | xargs shellcheck &&\
-	ansible-lint ./main.yml -x 305,403 &&\
+	ansible-lint ./main.yml -x 305,403,503 &&\
 	terraform validate
 
 update:
