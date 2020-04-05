@@ -1,3 +1,9 @@
+{% if remote_repos is defined %}
+http://dl-cdn.alpinelinux.org/alpine/v3.11/main
+http://dl-cdn.alpinelinux.org/alpine/v3.11/community
+http://dl-cdn.alpinelinux.org/alpine/edge/testing
+{% else %}
 {{ s3_url }}/alpine/v3.11/main
 {{ s3_url }}/alpine/v3.11/community
 {{ s3_url }}/alpine/edge/testing
+{% endif %}
