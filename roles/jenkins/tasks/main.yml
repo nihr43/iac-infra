@@ -1,17 +1,44 @@
 ---
 
 - name: install role packages
-  package: name=jenkins state=present
+  package: name=jenkins,minio-client state=present
+  register: bootstrap
+
+- name: pip install boto3 for s3
+  pip: name=boto3 state=latest
+
+- name: create jenkins dir
+  file:
+   path: /var/lib/jenkins
+   state: directory
+   owner: jenkins
+   group: jenkins
+  when: bootstrap.changed
+
+- name: clone jenkins' home directory
+  shell: |
+    export MC_HOST_ansible=http://{{ lookup ('env', 'AWS_ACCESS_KEY') }}:{{ lookup ('env', 'AWS_SECRET_KEY') }}@{{ s3_ip }}
+    mcli mirror --preserve --remove --overwrite ansible/jenkins/ /var/lib/jenkins/
+  when: bootstrap.changed
+
+- name: enforce jenkins dir permissions
+  file:
+   path: /var/lib/jenkins
+   state: directory
+   owner: jenkins
+   group: jenkins
+   recurse: true
+  when: bootstrap.changed
 
 - name: install apk packages for jobs
-  package: name=make,ansible-lint,parallel,terraform,ruby,postgresql-client,minio-client,go,shellcheck,docker-compose,ansible
+  package: name=make,ansible-lint,parallel,terraform,ruby,postgresql-client,go,shellcheck,docker-compose,ansible,rsync,git,go
 
 - name: install pip packages for jobs
   pip:
    name: yamllint
    state: latest
 
-- name: install gems for jobs
+- name: install ruby packages for jobs
   gem:
    name: mdl
    state: latest
