@@ -1,0 +1,36 @@
+---
+
+- name: install role packages
+  package: name=unbound state=present
+
+- name: configure dns
+  template:
+   src: resolv.conf
+   dest: /etc/resolv.conf
+   owner: root
+   group: wheel
+   mode: '0644'
+
+- name: configure unbound
+  template:
+   src: unbound.conf
+   dest: /etc/unbound/unbound.conf
+   owner: root
+   group: root
+   mode: '0644'
+  notify: restart unbound
+
+- name: configure unbound counf.d
+  template:
+   src: conf.d.unbound
+   dest: /etc/conf.d/unbound
+   owner: root
+   group: root
+   mode: '0755'
+  notify: restart unbound
+
+- name: enable unbound
+  service:
+   name: unbound
+   state: started
+   enabled: true
