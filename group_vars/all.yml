@@ -1,5 +1,7 @@
 ---
 
+nameserver: 10.0.0.3
 static_netmask: '255.255.254.0'
-s3_ip: '10.0.0.58:9000'
+s3_ip: 'minio.localnet:9000'
 s3_url: 'http://{{ s3_ip }}'
+elasticsearch_cluster: 'http://elasticsearch.localnet:9200'
