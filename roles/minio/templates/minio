@@ -1,0 +1,21 @@
+# defaults to storing data in /srv/minio
+# but you can run multiple instances, e.g minio.home in /srv/minio.home
+#MINIO_VOLUMES="/srv/${RC_SVCNAME}"
+MINIO_VOLUMES="{% for node in groups[mygroup] %}http://{{ hostvars[node].static_address }}:9000/srv/minio{% if not loop.last %} {% endif %}{% endfor %}"
+
+export MINIO_ACCESS_KEY={{ lookup ('env', 'AWS_ACCESS_KEY') }}
+export MINIO_SECRET_KEY={{ lookup ('env', 'AWS_SECRET_KEY') }}
+export MINIO_STORAGE_CLASS_STATE=on
+export MINIO_STORAGE_CLASS_STANDARD=EC:2
+export MINIO_COMPRESS="true"
+export MINIO_COMPRESS_EXTENSIONS=".pdf,.doc,.txt,.log,.csv,.json,.tar,.xml,.bin,.iso,.img"
+export MINIO_COMPRESS_MIMETYPES="text/*"
+
+# When enabled, minio-FS saves the HTTP headers that start with `X-Amz-Meta-` and `X-Minio-Meta`. These header meta data can be retrieved on HEAD and GET requests on the object.
+export MINIO_ENABLE_FSMETA=1
+
+# --compat is meant for applications which rely on ETag being md5sum hex
+export MINIO_OPTS="--quiet --anonymous --compat"
+
+# Set total cache size in NN[GB|MB|KB]. Defaults to 8GB
+export MINIO_CACHE_SIZE="1GB"

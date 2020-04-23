@@ -1,0 +1,9 @@
+---
+
+- name: restart minio
+  service: name=minio state=restarted
+  listen: "restart minio"
+
+- name: restart keepalived
+  service: name=keepalived state=restarted
+  listen: "restart keepalived"

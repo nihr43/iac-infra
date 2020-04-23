@@ -1,0 +1,19 @@
+---
+
+- name: install minio
+  package: name=minio state=present
+
+- name: configure minio
+  template:
+   src: minio
+   dest: /etc/conf.d/minio
+   owner: root
+   group: root
+   mode: '0600'
+  notify: restart minio
+
+- name: enable minio
+  service:
+   name: minio
+   enabled: true
+   state: started
