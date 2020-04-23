@@ -3,4 +3,3 @@
 mygroup: minio_blue
 bind_address: 10.0.0.58
 keepalived_watch: minio
-static_netmask: 255.255.254.0
