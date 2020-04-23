@@ -1,0 +1,51 @@
+---
+
+name: '{{ static_address }}'
+listen-peer-urls: https://{{ static_address }}:2380
+listen-client-urls: https://{{ static_address }}:2379
+initial-advertise-peer-urls: https://{{ static_address }}:2380
+advertise-client-urls: https://{{ static_address }}:2379
+data-dir:
+wal-dir:
+snapshot-count: 10000
+heartbeat-interval: 100
+election-timeout: 1000
+quota-backend-bytes: 0
+max-snapshots: 5
+max-wals: 5
+cors:
+discovery:
+discovery-fallback: 'proxy'
+discovery-proxy:
+discovery-srv:
+initial-cluster: {% for node in groups[mygroup] %}{{ hostvars[node].static_address }}=https://{{ hostvars[node].static_address }}:2380{% if not loop.last %},{% endif %}{% endfor %}
+
+initial-cluster-token: '93dd23801abf7e775fe9f1ff47e5438d'
+initial-cluster-state: 'new'
+strict-reconfig-check: false
+enable-v2: false
+enable-pprof: true
+proxy: 'off'
+proxy-failure-wait: 5000
+proxy-refresh-interval: 30000
+proxy-dial-timeout: 1000
+proxy-write-timeout: 5000
+proxy-read-timeout: 0
+debug: false
+log-package-levels:
+log-output:
+force-new-cluster: false
+client-transport-security:
+  ca-file: /etc/etcd/ca.pem
+  cert-file: /etc/etcd/{{ static_address }}.pem
+  key-file: /etc/etcd/{{ static_address }}-key.pem
+  client-cert-auth: true
+  trusted-ca-file: /etc/etcd/ca.pem
+  auto-tls: false
+peer-transport-security:
+  ca-file: /etc/etcd/ca.pem
+  cert-file: /etc/etcd/{{ static_address }}.pem
+  key-file: /etc/etcd/{{ static_address }}-key.pem
+  peer-client-cert-auth: true
+  trusted-ca-file: /etc/etcd/ca.pem
+  auto-tls: false
